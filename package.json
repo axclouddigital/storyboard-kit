@@ -1,0 +1,38 @@
+{
+  "name": "storyboard-kit",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Turns one story file into a phone-first static scroll page: image prompts for approval, generated pictures, real app screens from walkthrough-kit recordings, a build and a check.",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "storyboard": "./dist/cli.js"
+  },
+  "files": ["dist"],
+  "engines": { "node": ">=22.18" },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.json && chmod +x dist/cli.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test \"test/*.test.ts\"",
+    "prepare": "npm run build"
+  },
+  "dependencies": {
+    "sharp": "^0.35.4"
+  },
+  "peerDependencies": {
+    "@playwright/test": ">=1.50.0"
+  },
+  "peerDependenciesMeta": {
+    "@playwright/test": { "optional": true }
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1",
+    "@types/node": "^22.14.0",
+    "typescript": "~5.8.2"
+  }
+}
