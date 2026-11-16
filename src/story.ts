@@ -12,7 +12,7 @@ interface FontFile {
   weight?: string;
 }
 
-/** The page's colours (dark). Six-digit hex. The same keys as walkthrough-kit's palette. */
+/** The page's colours. Six-digit hex. The same keys as walkthrough-kit's palette. The defaults are dark; a `light` scheme needs its own. */
 interface Palette {
   /** Page background; also the text on the primary button. */
   bg: string;
@@ -40,6 +40,11 @@ interface Brand {
   /** Without them the page falls back to the system sans-serif. */
   fonts?: { heading: FontFile; body: FontFile };
   palette?: Partial<Palette>;
+  /**
+   * `dark` (default) or `light`: which way the palette runs, for what the palette can't say
+   * (how heavy the shadows are, the device frames, the browser's own controls).
+   */
+  scheme?: "dark" | "light";
   /** An SVG drawn before the wordmark. */
   mark?: string;
   /** A wide, short SVG strip (the header's string of lights), repeated at the divider. */
@@ -284,6 +289,7 @@ export function resolveStory(story: Story, file: string): Resolved {
     },
     brand: {
       ...story.brand,
+      scheme: story.brand.scheme ?? "dark",
       palette,
       mark: story.brand.mark && resolve(root, story.brand.mark),
       festoon: story.brand.festoon && resolve(root, story.brand.festoon),

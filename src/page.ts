@@ -72,6 +72,10 @@ function fontFace(family: string, font: Font) {
 
 function css(story: Resolved, assets: Assets) {
   const p = story.brand.palette;
+  const light = story.brand.scheme === "light";
+  // On a light page a device frame is the dark thing, a shadow is faint and nothing glows.
+  const frame = light ? mix(p.fg, "#000000", 0.3) : mix(p.bg, "#000000", 0.45);
+  const shade = (dark: number, onLight: number) => `rgb(0 0 0 / ${light ? onLight : dark})`;
   const festoon = assets.festoon;
   const mark = assets.mark;
   return `${assets.fonts ? `${fontFace("Story Heading", assets.fonts.heading)}\n${fontFace("Story Body", assets.fonts.body)}\n` : ""}:root {
@@ -87,7 +91,7 @@ function css(story: Resolved, assets: Assets) {
   --font-display: ${assets.fonts ? `"Story Heading", "Story Body", ` : ""}ui-sans-serif, system-ui, sans-serif;
   --font-body: ${assets.fonts ? `"Story Body", ` : ""}ui-sans-serif, system-ui, sans-serif;
   --pad: max(1.25rem, env(safe-area-inset-left, 0px));
-  color-scheme: dark;
+  color-scheme: ${light ? "light" : "dark"};
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
@@ -133,7 +137,7 @@ a { color: var(--primary); }
 .bleed { border-radius: 0; width: 100%; max-height: 88vh; }
 
 /* Real app screens in plain device frames, so they read as the app, not as photos. */
-.phone, .tablet { margin: 0; background: ${mix(p.bg, "#000000", 0.45)}; border: 1px solid var(--border); box-shadow: 0 0 0 6px var(--secondary), 0 24px 48px -16px rgb(0 0 0 / 0.7); }
+.phone, .tablet { margin: 0; background: ${frame}; border: 1px solid var(--border); box-shadow: 0 0 0 6px var(--secondary), 0 24px 48px -16px ${shade(0.7, 0.28)}; }
 .phone { border-radius: 2rem; padding: 6px; width: 100%; max-width: 17.5rem; }
 .phone img { width: 100%; height: auto; border-radius: 1.625rem; }
 .tablet { border-radius: 1.25rem; padding: 10px; width: 100%; }
@@ -159,7 +163,7 @@ a { color: var(--primary); }
 .pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; align-items: end; }
 .screens { display: flex; justify-content: center; }
 .screens .stack { position: relative; width: min(64%, 17.5rem); padding-bottom: 1.5rem; margin-right: 18%; }
-.screens .inset { position: absolute; right: -32%; bottom: 0; width: 52%; max-width: 9rem; border-radius: 1.25rem; padding: 4px; box-shadow: 0 0 0 4px var(--secondary), 0 16px 32px -8px rgb(0 0 0 / 0.8); }
+.screens .inset { position: absolute; right: -32%; bottom: 0; width: 52%; max-width: 9rem; border-radius: 1.25rem; padding: 4px; box-shadow: 0 0 0 4px var(--secondary), 0 16px 32px -8px ${shade(0.8, 0.32)}; }
 .screens .inset img { border-radius: 1rem; }
 .media .phone { margin: 0 auto; }
 .split > .pic.port { width: 100%; max-width: 24rem; margin-inline: auto; }
@@ -183,7 +187,7 @@ a { color: var(--primary); }
 .block h3 { font-size: 1.1875rem; color: var(--primary); }
 .block ul, .text ul { padding: 0; list-style: none; }
 .block li, .text ul li { position: relative; padding-left: 1.125rem; margin-top: 0.375rem; }
-.block li::before, .text ul li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.4375rem; height: 0.4375rem; border-radius: 50%; background: var(--primary); box-shadow: 0 0 8px ${rgba(p.accent, 0.6)}; }
+.block li::before, .text ul li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.4375rem; height: 0.4375rem; border-radius: 50%; background: var(--primary);${light ? "" : ` box-shadow: 0 0 8px ${rgba(p.accent, 0.6)};`} }
 .block ul { margin: 0.625rem 0 0; }
 .block p { margin-top: 0.625rem; }
 .block:last-child:nth-child(odd) { grid-column: 1 / -1; }
@@ -196,7 +200,7 @@ a { color: var(--primary); }
   display: inline-flex; align-items: center; justify-content: center; min-height: 3.25rem; padding: 0.75rem 1.5rem;
   border-radius: 1rem; font-weight: 700; font-size: 1.0625rem; text-decoration: none; text-align: center;
 }
-.primary { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 10px 30px -12px ${rgba(p.accent, 0.6)}; }
+.primary { background: var(--primary); color: var(--primary-foreground); box-shadow: 0 10px 30px -12px ${rgba(p.accent, light ? 0.45 : 0.6)}; }
 .secondary { border: 1px solid var(--input); color: var(--foreground); }
 .action p { margin-top: 0.5rem; color: var(--muted-foreground); font-size: 0.9375rem; }
 .action .button { width: 100%; }

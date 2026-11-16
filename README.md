@@ -14,7 +14,7 @@ Extracted from Truckbites.
 ## Install
 
 ```bash
-npm install -D "github:axclouddigital/storyboard-kit#v0.1.0"
+npm install -D "github:axclouddigital/storyboard-kit#v0.2.0"
 ```
 
 The package builds itself on install (`prepare`). With pnpm 10, allow that build: add `storyboard-kit` to `pnpm.onlyBuiltDependencies`.
@@ -34,7 +34,7 @@ Then the scripts, one per command, each taking the story's folder:
 ## What the project supplies
 
 1. One folder per story, `stories/<id>/`, with its `story.ts`, and the reference images the pictures are made from (stories can share them, for example in `stories/reference/`).
-2. Brand settings: name, wordmark, fonts, colours and, if it has them, a mark and a lights strip (SVG).
+2. Brand settings: name, wordmark, fonts, colours and, if it has them, a mark and a lights strip (SVG). The page is dark unless the brand says `scheme: "light"`, which wants a full light palette with it (pale `bg` and `card`, dark `fg`, and an `accent` dark enough to read on the page and to carry the button's pale text).
 3. Where the page goes (`outDir`, for example `public/<id>`) and its URL.
 4. Git-ignore the store of originals (`stories/*/originals/`) and the work folder (`test-results/`).
 

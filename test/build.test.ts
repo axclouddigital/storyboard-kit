@@ -134,3 +134,20 @@ test("lists in a scene, three pictures in a split and a picture above the offer"
   assert.match(html, /<div class="media duo">\s*<figure class="tablet">[\s\S]*?<\/figure>\s*<div class="pair">\s*<figure class="phone">[\s\S]*?<figure class="pic port">/);
   assert.match(html, /<section class="scene offer"[^>]*>\s*<figure class="pic land">\s*<img src="\/demo\/img\/s04-after\.jpg"/);
 });
+
+test("a light scheme tells the browser so, darkens the device frames and drops the glow", async () => {
+  const p = await makeProject();
+  await generate(p.resolved(), { approved: approve(p.resolved()), log: quiet });
+  p.story.brand.scheme = "light";
+  p.story.brand.palette = { bg: "#fbf9f5", fg: "#1b1c1a", card: "#f1edeb", muted: "#e4dfd8", dim: "#5d5a52", line: "#cdc5bb", accent: "#3b4b32" };
+  const light = readFileSync((await build(p.resolved(), { log: quiet })).file, "utf8");
+  assert.match(light, /color-scheme: light;/);
+  // The frame is nearly black on the pale page, and its shadow is a faint one.
+  assert.match(light, /\.phone, \.tablet \{[^}]*background: #13141[0-9a-f];[^}]*rgb\(0 0 0 \/ 0\.28\)/);
+  assert.doesNotMatch(light, /li::before[^}]*box-shadow/);
+
+  p.story.brand.scheme = undefined;
+  const dark = readFileSync((await build(p.resolved(), { log: quiet })).file, "utf8");
+  assert.match(dark, /color-scheme: dark;/);
+  assert.match(dark, /li::before[^}]*box-shadow/);
+});
