@@ -87,7 +87,7 @@ export default defineStory({
     { divider: "The same morning, with Brewline" },
     {
       heading: "Order from the stall next door.",
-      body: "The menu and the wait, on your phone.",
+      body: "See the menu and the wait from the next stall over.",
       pictures: [{
         screen: { flow: "order-a-coffee", step: 1, actor: "customer" },
         alt: "The coffee menu with the current wait",
@@ -97,13 +97,13 @@ export default defineStory({
   ],
   offer: {
     heading: "A free trial at the market.",
-    intro: "We set it up for you.",
-    blocks: [{ title: "What we do", items: ["Put up the QR signs"] }, { title: "The one thing we need", text: "Your OK." }],
+    intro: "Brewline sets it up.",
+    blocks: [{ title: "What Brewline does", items: ["Puts up the QR signs"] }, { title: "The one thing needed", text: "The committee's OK." }],
     fine: "Customers pay a small fee per order, shown before they pay.",
     video: { flow: "order-a-coffee", heading: "One order, start to finish", caption: "60 seconds: …" },
     actions: [
       { label: "Try the demo", href: "https://example.com/demo", note: "Nothing is charged." },
-      { label: "Email us", href: "mailto:hello@example.com" },
+      { label: "Email Brewline", href: "mailto:hello@example.com" },
     ],
   },
   footer: ["Brewline"],
@@ -112,6 +112,17 @@ export default defineStory({
 ```
 
 A project with several stories keeps what they share (root, brand, walkthroughs, generator, check) in one module and spreads it into each. `src/story.ts` documents every field.
+
+### Wording
+
+Every line a reader sees (title, description, headings, bodies, captions, alt text, offer, buttons, footer) follows one rule: start with what the reader can do, and use no personal pronouns.
+
+- Lead with a verb where the line is about something the product lets a person do. "Choose how long the gallery stays up: 7, 30 or 90 days", not "The gallery stays up for 7, 30 or 90 days".
+- No I, we, our, you, your, they, their, he, she, her. Name the role and repeat it: "guests", "the photographer", "the committee", "the truck".
+- Scenes about how it goes today have nothing to choose yet: present tense, roles, no pronouns. "The morning after, the couple asks in three group chats."
+- What the company does takes the product name as its subject: "Brewline puts up the QR signs", not "We put up the QR signs".
+- A page written from a customer's side follows the same rule: "the market's busiest hour", not "our busiest hour".
+- Exact UI labels ("Add your photos") and quoted speech stay as they are. Rewording never adds, drops or softens a fact, a price or the small print.
 
 ### Scenes
 
